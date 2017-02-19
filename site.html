@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+
+var holidays=new Array("01-13-2017","01-26-2017","02-21-2017","02-24-2017","03-29-2017","04-01-2017","04-14-2017","04-29-2017","05-01-2017","06-26-2017", "08-15-2017", "09-02-2017","09-19-2017", "09-29-2017", "09-30-2017", "10-02-2017", "10-05-2017", "10-18-2017", "10-20-2017", "11-01-2017", "11-06-2017", "12-01-2017", "12-25-2017");
+
+function myFunction()
+{
+
+var days = document.getElementById("txt1").value;	
+ 
+  days = parseInt(days)
+  
+  var dt=document.getElementById("startDate").value;
+  var startDate = new Date();
+  dt = new Date(dt.replace(/-/g, "/"));
+  startDate.setTime(dt.getTime())
+  console.log(startDate)
+
+  
+   console.log(startDate)
+   console.log(days)
+   var dayOfTheWeek = startDate.getDay();
+   var calendarDays = days;
+   var solarMilliSec = 24*60*60*1000;
+   var endDate = new Date();
+ 
+  var deliveryDay = dayOfTheWeek + days;
+  if (deliveryDay > 6) {
+    days -= 6 - dayOfTheWeek;
+    //count this coming weekend
+    calendarDays += 1;
+    //how many whole weeks?
+    deliveryWeeks = Math.floor(days / 5);
+    //two days per weekend per week
+    calendarDays += deliveryWeeks * 2;
+  }
+ 
+  endDate.setTime(startDate.getTime() + calendarDays*solarMilliSec)
+  console.log(endDate)   
+  for(i = 0; i < holidays.length; i++)
+  {
+    var hol = new Date(holidays[i]);
+		
+	if(hol.getTime() > startDate.getTime() && hol.getTime() <= endDate.getTime()){
+	
+		  endDate.setTime(endDate.getTime() + solarMilliSec)	
+	}
+	if(endDate.getDay() == 0)
+	{
+		endDate.setTime(endDate.getTime() + 1*solarMilliSec)
+	}
+	
+	if( endDate.getDay() == 6)
+	{
+		endDate.setTime(endDate.getTime() + 2*solarMilliSec)
+	}
+	}
+	
+  document.getElementById("date").innerHTML = endDate;
+
+
+}
+
+
+</script>
+</head>
+<body>
+<h1>Estimated Delivery Date</h1>
+
+Today's Date   :   <p id="Tdate" style="display:inline"></p>
+<script>
+document.getElementById("Tdate").innerHTML = Date();
+</script>
+
+<div >
+    <h2 style="display:inline">Start Date</h2>
+	<br>
+	<input type="date" id="startDate" value="2017-01-01">
+	<p id="sd"></p>
+</div>
+
+<br/>Estimated business days for delivery:
+
+<input type="number" id="txt1" name="text1">
+
+<button type="button" onclick="myFunction()">Get actual delivery date</button>
+<br>
+<br>
+Delivery Date : <p id="date"></p>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
